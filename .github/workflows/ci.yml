@@ -1,4 +1,4 @@
-name: Terraform-CI
+name: Terraform - CI
 
 on:
   push:
@@ -26,6 +26,9 @@ jobs:
           aws-region: us-east-1
           role-to-assume: 'arn:aws:iam::741448934450:role/tf-role' #${{ secrets.ROLE_TO_ASSUME }}
 
+      - name: Test AWS credentials
+        run: aws sts get-caller-identity
+
       - name: Setup terraform
         uses: 'hashicorp/setup-terraform@v3'
         with:
@@ -38,7 +41,9 @@ jobs:
         run: terraform fmt -check
       
       - name: Terraform plan
-        run: terraform plan
+        run: |
+          export AWS_PROFILE=tf-role
+          terraform plan
 
       - name: Terraform apply
         run: terraform apply -auto-approve
