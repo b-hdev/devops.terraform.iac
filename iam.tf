@@ -83,9 +83,9 @@ resource "aws_iam_policy" "tf_permissions_role" {
           "iam:DeletePolicy",
           "iam:CreateOpenIDConnectProvider",
           "iam:DeleteOpenIDConnectProvider",
-          "iam:TagRole",  
-          "iam:TagPolicy",  
-          "iam:TagOpenIDConnectProvider"  
+          "iam:TagRole",
+          "iam:TagPolicy",
+          "iam:TagOpenIDConnectProvider"
         ]
         Resource = "*"
       }
