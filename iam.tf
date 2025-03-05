@@ -26,23 +26,25 @@ resource "aws_iam_role" "tf-role" {
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
-    Statement : [
+    Statement: [
       {
-        Action : "sts:AssumeRoleWithWebIdentity",
-        Condition : {
-          StringEquals : {
-            "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
+        Action: "sts:AssumeRoleWithWebIdentity",
+        Condition: {
+          StringEquals: {
+            "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com",
             "token.actions.githubusercontent.com:sub" = "repo:b-hdev/devops.terraform.iac:ref:refs/heads/master"
           }
         },
-        Effect : "Allow",
-        Principal : {
-          Federated : "arn:aws:iam::741448934450:oidc-provider/token.actions.githubusercontent.com",
-          Service : "iam.amazonaws.com"
+        Effect: "Allow",
+        Principal: {
+          Federated: "arn:aws:iam::741448934450:oidc-provider/token.actions.githubusercontent.com",
         }
       }
     ]
   })
+  tags = {
+    Iac = "True"
+  }
 }
 # ------------------------------------------------ END
 
@@ -51,7 +53,7 @@ resource "aws_iam_role" "tf-role" {
 # ------------------------------------------------
 resource "aws_iam_policy" "tf_permissions_role" {
   name        = "tf-permissions-role"
-  description = "github actions permissions role"
+  description = "GitHub actions permissions role"
 
   policy = jsonencode({
     Version = "2012-10-17",
@@ -88,9 +90,6 @@ resource "aws_iam_policy" "tf_permissions_role" {
       }
     ]
   })
-  tags = {
-    Iac = "True"
-  }
 }
 # ------------------------------------------------ END
 
