@@ -1,3 +1,6 @@
+# ------------------------------------------------ START
+# # ECR REPOSITORY CONFIGURATION
+# ------------------------------------------------
 resource "aws_ecr_repository" "devops-aic-ci-api" {
   name                 = "devops-ecr-ci"
   image_tag_mutability = "MUTABLE"
@@ -10,3 +13,4 @@ resource "aws_ecr_repository" "devops-aic-ci-api" {
     Iac = "True"
   }
 }
+# ------------------------------------------------ END

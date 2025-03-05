@@ -1,3 +1,6 @@
+# ------------------------------------------------ START
+# # OIDC PROVIDER CONFIGURATION
+# ------------------------------------------------
 resource "aws_iam_openid_connect_provider" "oidc-git" {
   url = "https://token.actions.githubusercontent.com"
   client_id_list = [
@@ -12,7 +15,12 @@ resource "aws_iam_openid_connect_provider" "oidc-git" {
     Iac = "True"
   }
 }
+# ------------------------------------------------ END
 
+
+# ------------------------------------------------ START
+# # TF ROLE CONFIGURATION GITHUB ACTIONS
+# ------------------------------------------------
 resource "aws_iam_role" "tf-role" {
   name = "tf-role"
 
@@ -39,8 +47,64 @@ resource "aws_iam_role" "tf-role" {
     Iac = "True"
   }
 }
+# ------------------------------------------------ END
 
+# ------------------------------------------------ START
+# # TF ROLE CONFIGURATION PERMISSIONS
+# ------------------------------------------------
+resource "aws_iam_policy" "tf_permissions_role" {
+  name        = "tf-permissions-role"
+  description = "policy permissions role"
 
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid      = "Statement1"
+        Effect   = "Allow"
+        Action   = "ecr:*"
+        Resource = "*"
+      },
+      {
+        Sid      = "Statement2"
+        Effect   = "Allow"
+        Action   = "iam:*"
+        Resource = "*"
+      }
+    ]
+  })
+}
+# ------------------------------------------------ END
+
+# ------------------------------------------------ START
+# # TF POLICY ROLE CONFIGURATION PERMISSIONS
+# ------------------------------------------------
+
+resource "aws_iam_role" "tf_permissions_policy" {
+  name        = "tf-permissions-policy"
+  description = "policy permissions role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = "sts:AssumeRole"
+        Principal = {
+          Service = "iam.amazonaws.com"
+        }
+      }
+    ]
+  })
+  tags = {
+    Iac = "True"
+  }
+}
+# ------------------------------------------------ END
+
+# ------------------------------------------------ START
+# # APP RUNNER ROLE CONFIGURATION
+# ------------------------------------------------
 resource "aws_iam_role" "app-runner-role" {
   name = "app-runner-role"
 
@@ -60,14 +124,24 @@ resource "aws_iam_role" "app-runner-role" {
     IAC = "True"
   }
 }
+# ------------------------------------------------ END
 
-## fix deprecated solutions in terraform
+
+# ------------------------------------------------ START
+# # fix deprecated solutions in terraform
+# # APP RUNNER ROLE CONFIGURATION LINK
+# ------------------------------------------------
 resource "aws_iam_role_policy_attachment" "ecr_readonly" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
   role       = aws_iam_role.app-runner-role.name
 }
+# ------------------------------------------------ END
 
-## fix deprecated solutions in terraform
+
+# ------------------------------------------------ START
+# # fix deprecated solutions in terraform
+# # ECR ROLE CONFIGURATION
+# ------------------------------------------------
 resource "aws_iam_role" "ecr_role" {
   name = "ecr_role"
 
@@ -94,8 +168,13 @@ resource "aws_iam_role" "ecr_role" {
     Iac = "True"
   }
 }
+# ------------------------------------------------ END
 
-## fix deprecated solutions in terraform
+
+# ------------------------------------------------ START
+# # fix deprecated solutions in terraform
+# # ECR ROLE CONFIGURATION PERMISSIONS
+# ------------------------------------------------
 resource "aws_iam_policy" "ecr_permissions_policy" {
   name        = "app-permissions-policy"
   description = "policy permissions role"
@@ -140,6 +219,4 @@ resource "aws_iam_policy" "ecr_permissions_policy" {
     Iac = "True"
   }
 }
-
-
-
+# ------------------------------------------------ END
