@@ -26,6 +26,11 @@ jobs:
           aws-region: us-east-1
           role-to-assume: 'arn:aws:iam::741448934450:role/tf-role' #${{ secrets.ROLE_TO_ASSUME }}
 
+
+      - name: Set AWS environment variables
+        run: |
+          echo "AWS_REGION=us-east-1" >> $GITHUB_ENV
+
       - name: Test AWS credentials
         run: aws sts get-caller-identity
 
