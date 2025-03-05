@@ -14,4 +14,6 @@ resource "aws_iam_role_policy_attachment" "ecr_policy_attachment" {
 
 provider "aws" {
   region = "us-east-1"
+
+  profile = var.is_github_actions ? null : "bhdev-sso"
 }

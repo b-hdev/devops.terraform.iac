@@ -39,6 +39,9 @@ jobs:
         with:
           terraform_version: 1.11.1
 
+      - name: Set environment variable for GitHub Actions
+        run: echo "TF_VAR_is_github_actions=true" >> $GITHUB_ENV
+
       - name: Terraform init
         run: terraform init
 
