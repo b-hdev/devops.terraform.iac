@@ -37,7 +37,7 @@ jobs:
       - name: Setup terraform
         uses: 'hashicorp/setup-terraform@v3'
         with:
-          terraform_version: 1.11.1
+          terraform_version: ${{ vars.TF_VERSION }}
 
       - name: Set environment variable for GitHub Actions
         run: echo "TF_VAR_is_github_actions=true" >> $GITHUB_ENV
@@ -54,4 +54,5 @@ jobs:
           terraform plan
 
       - name: Terraform apply
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         run: terraform apply -auto-approve

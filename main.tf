@@ -8,6 +8,11 @@ terraform {
       version = "5.89.0"
     }
   }
+  backend "s3" {
+    bucket = "devops-iac-versioning-bucket"
+    key = "state/terraform.tfstate"
+    region = "us-east-1"
+  }
 }
 # ------------------------------------------------ END
 
@@ -36,5 +41,29 @@ provider "aws" {
   region = "us-east-1"
 
   profile = var.is_github_actions ? null : "bhdev-sso"
+}
+# ------------------------------------------------ END
+
+# ------------------------------------------------ START
+# # S3 BUCKET CONFIGURATION
+# ------------------------------------------------
+
+resource "aws_s3_bucket" "terraform-state" {
+  bucket        = "devops-iac-versioning-bucket"
+  force_destroy = true
+
+  lifecycle {
+    prevent_destroy = true
+  }
+  tags = {
+    "Iac" = "True"
+  }
+}
+
+resource "aws_s3_bucket_versioning" "terraform-state" {
+  bucket = "devops-iac-versioning-bucket"
+  versioning_configuration {
+    status = "Enabled"
+  }
 }
 # ------------------------------------------------ END
