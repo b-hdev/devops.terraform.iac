@@ -16,16 +16,25 @@ resource "aws_iam_role" "ecr_role" {
   name = "ecr_role"
 
   assume_role_policy = jsonencode({
-    Version = "2012-10-17"
     Statement = [
       {
         Action = "sts:AssumeRoleWithWebIdentity"
+        Condition = {
+            "token.actions.githubusercontent.com:aud" : [
+              "sts.amazonaws.com"
+              ],
+            "token.actions.githubusercontent.com:sub" : [
+              "repo:b-hdev/devops.docker.containers:ref:refs/heads/master"
+              ]
+          }
         Effect = "Allow"
         Principal = {
+          Federated = "arn:aws:iam::741448934450:oidc-provider/token.actions.githubusercontent.com"
           Service = "ecs.amazonaws.com"
         }
       }
     ]
+    Version = "2012-10-17"
   })
 
     tags = {
@@ -39,10 +48,26 @@ resource "aws_iam_policy" "ecr_permissions_policy" {
   description = "policy permissions role"
 
   policy = jsonencode({
-    Version = "2012-10-17"
     Statement = [
       {
-        Action = [
+          Sid = "Statement1"
+          Action ="apprunner:*"
+          Effect = "Allow"
+          Resource = "*"
+
+        },
+        {
+          Sid = "Statement2"
+            Action = [
+              "iam:PassRole",
+              "iam:CreateServiceLinkedRole"
+        ]
+          Effect = "Allow"
+          Resource = "*"
+        },
+        {
+          Sid = "Statement3"
+                  Action = [
             "ecr:GetDownloadUrlForLayer",
             "ecr:BatchGetImage",
             "ecr:BatchCheckLayerAvailability",
@@ -54,12 +79,14 @@ resource "aws_iam_policy" "ecr_permissions_policy" {
         ]
         Effect   = "Allow"
         Resource = "*"
-      }
-    ]
-  })
+        }
+      ]
+    })
 
-    tags = {
+        tags = {
       Iac = "True"
   }
 }
+
+
 
