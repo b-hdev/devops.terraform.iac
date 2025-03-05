@@ -47,7 +47,7 @@ jobs:
       
       - name: Terraform plan
         run: |
-          export AWS_PROFILE=tf-role
+          unset AWS_PROFILE
           terraform plan
 
       - name: Terraform apply
