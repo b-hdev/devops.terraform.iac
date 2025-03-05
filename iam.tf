@@ -91,6 +91,9 @@ resource "aws_iam_policy" "tf_permissions_role" {
       }
     ]
   })
+  tags = {
+    Iac = "True"
+  }
 }
 # ------------------------------------------------ END
 
