@@ -14,5 +14,5 @@ resource "aws_iam_role_policy_attachment" "ecr_policy_attachment" {
 
 provider "aws" {
   region  = "us-east-1"
-  profile = "bhdev-sso"
+# profile = "bhdev-sso"
 }
