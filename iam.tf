@@ -66,7 +66,8 @@ resource "aws_iam_policy" "tf_permissions_role" {
           "ecr:CreateRepository",
           "ecr:DeleteRepository",
           "ecr:PutLifecyclePolicy",
-          "ecr:GetAuthorizationToken"
+          "ecr:GetAuthorizationToken",
+          "ecr:TagResource"
         ]
         Resource = "*"
       },
@@ -81,7 +82,10 @@ resource "aws_iam_policy" "tf_permissions_role" {
           "iam:CreatePolicy",
           "iam:DeletePolicy",
           "iam:CreateOpenIDConnectProvider",
-          "iam:DeleteOpenIDConnectProvider"
+          "iam:DeleteOpenIDConnectProvider",
+          "iam:TagRole",  
+          "iam:TagPolicy",  
+          "iam:TagOpenIDConnectProvider"  
         ]
         Resource = "*"
       }
