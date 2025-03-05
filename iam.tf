@@ -54,51 +54,39 @@ resource "aws_iam_role" "tf-role" {
 # ------------------------------------------------
 resource "aws_iam_policy" "tf_permissions_role" {
   name        = "tf-permissions-role"
-  description = "policy permissions role"
+  description = "github actions permissions role"
 
   policy = jsonencode({
-    Version = "2012-10-17"
+    Version = "2012-10-17",
     Statement = [
       {
-        Sid      = "Statement1"
-        Effect   = "Allow"
-        Action   = "ecr:*"
+        Sid    = "AllowECRManagement"
+        Effect = "Allow"
+        Action = [
+          "ecr:CreateRepository",
+          "ecr:DeleteRepository",
+          "ecr:PutLifecyclePolicy",
+          "ecr:GetAuthorizationToken"
+        ]
         Resource = "*"
       },
       {
-        Sid      = "Statement2"
-        Effect   = "Allow"
-        Action   = "iam:*"
+        Sid    = "AllowIAMManagement"
+        Effect = "Allow"
+        Action = [
+          "iam:CreateRole",
+          "iam:AttachRolePolicy",
+          "iam:PutRolePolicy",
+          "iam:DeleteRole",
+          "iam:CreatePolicy",
+          "iam:DeletePolicy",
+          "iam:CreateOpenIDConnectProvider",
+          "iam:DeleteOpenIDConnectProvider"
+        ]
         Resource = "*"
       }
     ]
   })
-}
-# ------------------------------------------------ END
-
-# ------------------------------------------------ START
-# # TF POLICY ROLE CONFIGURATION PERMISSIONS
-# ------------------------------------------------
-
-resource "aws_iam_role" "tf_permissions_policy" {
-  name        = "tf-permissions-policy"
-  description = "policy permissions role"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Action = "sts:AssumeRole"
-        Principal = {
-          Service = "iam.amazonaws.com"
-        }
-      }
-    ]
-  })
-  tags = {
-    Iac = "True"
-  }
 }
 # ------------------------------------------------ END
 

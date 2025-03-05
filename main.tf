@@ -24,7 +24,7 @@ resource "aws_iam_role_policy_attachment" "ecr_policy_attachment" {
 # # TF ROLE CONFIGURATION LINK
 # ------------------------------------------------
 resource "aws_iam_role_policy_attachment" "tf_permissions_attachment" {
-  role       = aws_iam_role.tf_permissions_policy.name
+  role       = aws_iam_role.tf-role.name
   policy_arn = aws_iam_policy.tf_permissions_role.arn
 }
 # ------------------------------------------------ END
