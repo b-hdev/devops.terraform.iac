@@ -12,11 +12,40 @@ resource "aws_iam_openid_connect_provider" "oidc-git" {
     Iac = "True"
   }
 }
+
+
+resource "aws_iam_role" "app-runner-role" {
+  name = "app-runner-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement: [
+      {
+        Effect: "Allow",
+        Principal: {
+          Service: "build.apprunner.amazonaws.com"
+        }
+        Action = "sts:AssumeRole"
+      }
+    ]
+  })
+  tags = {
+    IAC = "True"
+  }
+}
+
+## fix deprecated solutions in terraform
+resource "aws_iam_role_policy_attachment" "ecr_readonly" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+  role = aws_iam_role.app-runner-role.name
+}
+
+## fix deprecated solutions in terraform
 resource "aws_iam_role" "ecr_role" {
   name = "ecr_role"
 
   assume_role_policy = jsonencode({
-     Version = "2012-10-17"
+    Version = "2012-10-17"
     Statement = [
       {
         Action = "sts:AssumeRoleWithWebIdentity"
@@ -34,13 +63,12 @@ resource "aws_iam_role" "ecr_role" {
       }
     ]
   })
-
     tags = {
     Iac = "True"
   }
 }
 
-
+## fix deprecated solutions in terraform
 resource "aws_iam_policy" "ecr_permissions_policy" {
   name        = "app-permissions-policy"
   description = "policy permissions role"
@@ -81,7 +109,6 @@ resource "aws_iam_policy" "ecr_permissions_policy" {
         }
       ]
     })
-
         tags = {
       Iac = "True"
   }
