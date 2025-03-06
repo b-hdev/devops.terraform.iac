@@ -25,7 +25,7 @@ jobs:
         with:
           aws-region: ${{ secrets.AWS_REGION }}   
           role-to-assume: ${{ secrets.ROLE_ASSUME }}
-          role-session-name: ${{ vars.ROLE_SESSION_NAME }}
+        #  role-session-name: ${{ vars.ROLE_SESSION_NAME }}
 
 
       # - name: Set AWS environment variables
