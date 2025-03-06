@@ -10,7 +10,7 @@ terraform {
   }
   backend "s3" {
     bucket = "devops-iac-versioning-bucket"
-    key = "state/terraform.tfstate"
+    key    = "state/terraform.tfstate"
     region = "us-east-1"
   }
 }

@@ -89,18 +89,18 @@ resource "aws_iam_policy" "tf_permissions_role" {
         Resource = "*"
       },
       {
-        Sid = "AllowS3Management"
+        Sid    = "AllowS3Management"
         Effect = "Allow"
         Action = [
-        "s3:CreateBucket",
-        "s3:DeleteBucket",
-        "s3:ListBucket",
-        "s3:GetBucketLocation",
-        "s3:GetBucketPolicy",
-        "s3:PutBucketPolicy",
-        "s3:DeleteBucketPolicy",
-        "s3:PutBucketVersioning",
-        "s3:GetBucketVersioning"
+          "s3:CreateBucket",
+          "s3:DeleteBucket",
+          "s3:ListBucket",
+          "s3:GetBucketLocation",
+          "s3:GetBucketPolicy",
+          "s3:PutBucketPolicy",
+          "s3:DeleteBucketPolicy",
+          "s3:PutBucketVersioning",
+          "s3:GetBucketVersioning"
         ]
         Resource = "*"
       }
